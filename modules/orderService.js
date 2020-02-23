@@ -17,9 +17,11 @@ function parseResponse(response) {
 	return parsed;
 }
 
-module.exports.getAllOrders = sID => {
+module.exports.getAllOrders = (sID, varStatus) => {		
 	return new Promise((resolve, reject) => {
-		Orders.find({ SellerID: sID }, (err, ords) => {
+		var sort = {};
+  		sort[varStatus] = -1;
+			Orders.find({ SellerID: sID }, (err, ords) => {
 			var parsedProds = parseResponse(ords);
 			if (!err) {
 				resolve(parsedProds);
@@ -27,9 +29,30 @@ module.exports.getAllOrders = sID => {
 				console.log("error:" + err);
 				reject(err);
 			}
-		});
+		}).sort(sort);
 	});
 };
+/*sorting options
+status: -1: Placed, Processed, Placed, Complete
+total: -1: most to least
+created_at: 1 - oldest to newest
+*/
+
+/*module.exports.SortOrder = (sID, SortPm) => {
+	return new Promise((resolve, reject) => {
+		var sortType = "";
+			Orders.find({ SellerID: sID }, (err, ords) => {
+			var parsedProds = parseResponse(ords);
+			if (!err) {
+				resolve(parsedProds);
+			} else {
+				console.log("error:" + err);
+				reject(err);
+			}
+		}).sort({sortType});
+	});
+};*/
+
 
 module.exports.getOrderById = oneId => {
 	return new Promise((resolve, reject) => {
@@ -44,7 +67,18 @@ module.exports.getOrderById = oneId => {
 		});
 	});
 };
-
+/*
+module.expoert.updateOrderS = passed => {
+	return new Promise((resolve, reject) => {
+		Orders.updateOne({ _id: passed._id },{status: passed.status, updated_at: Date.now}, (err, result) => {
+			if (err) {
+				reject(err);
+			} else {
+				resolve(result);
+			}
+		});
+	});
+}*/
 module.exports.addOrder = (newSID, newAdd, newCC, newStatus, newTotal, newPList) => {
 	return new Promise((resolve, reject) => {
 		var Order1 = new Orders({

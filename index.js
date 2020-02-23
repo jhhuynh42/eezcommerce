@@ -158,7 +158,7 @@ app.get("/getProductDetail/:id", (req, res) => {
 
 app.get("/dashboard/orders", (req, res) => {
 	var allorders = orderService
-		.getAllOrders(req.auth.userDetails._id)
+		.getAllOrders(req.auth.userDetails._id, "created_at")
 		.then(prods => {
 			res.render("orders", {
 				layout: "dashboard",
