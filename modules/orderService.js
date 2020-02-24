@@ -17,11 +17,11 @@ function parseResponse(response) {
 	return parsed;
 }
 
-module.exports.getAllOrders = (sID, varStatus) => {		
+module.exports.getAllOrders = (sID, varStatus) => {
 	return new Promise((resolve, reject) => {
 		var sort = {};
-  		sort[varStatus] = -1;
-			Orders.find({ SellerID: sID }, (err, ords) => {
+		sort[varStatus] = -1;
+		Orders.find({ SellerID: sID }, (err, ords) => {
 			var parsedProds = parseResponse(ords);
 			if (!err) {
 				resolve(parsedProds);
@@ -52,7 +52,6 @@ created_at: 1 - oldest to newest
 		}).sort({sortType});
 	});
 };*/
-
 
 module.exports.getOrderById = oneId => {
 	return new Promise((resolve, reject) => {
